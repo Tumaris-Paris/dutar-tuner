@@ -1,0 +1,24 @@
+{
+  "name": "Dutar Tuner — دۇتار تەڭشەگۈچ",
+  "short_name": "Dutar Tuner",
+  "description": "A bilingual chromatic tuner for the traditional Uyghur Dutar instrument.",
+  "start_url": "/dutar-tuner/",
+  "display": "standalone",
+  "background_color": "#FDF6E3",
+  "theme_color": "#BA7517",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

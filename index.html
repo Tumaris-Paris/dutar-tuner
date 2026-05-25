@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A bilingual (English & Uyghur) chromatic tuner for the Dutar — a traditional Uyghur two-stringed instrument." />
+  <meta name="author" content="Tumaris Paris" />
+  <meta name="theme-color" content="#BA7517" />
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:title" content="Dutar Tuner — دۇتار تەڭشەگۈچ" />
+  <meta property="og:description" content="Free web-based tuner for the traditional Uyghur Dutar instrument. Bilingual English & Uyghur." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tumaris-paris.github.io/dutar-tuner/" />
+
+  <!-- PWA support -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <title>Dutar Tuner — دۇتار تەڭشەگۈچ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Noto+Nastaliq+Urdu:wght@400;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="bg-pattern" aria-hidden="true"></div>
+
+  <main class="app" role="main">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-ornament" aria-hidden="true">
+        <span class="orn-diamond"></span>
+        <span class="orn-line"></span>
+        <span class="orn-diamond large"></span>
+        <span class="orn-line"></span>
+        <span class="orn-diamond"></span>
+      </div>
+      <h1 class="title-en">Dutar Tuner</h1>
+      <p class="title-uy" lang="ug" dir="rtl">دۇتار تەڭشەگۈچ</p>
+      <p class="subtitle">Traditional Uyghur Instrument · قەدىمىي ئۇيغۇر ئەسۋابى</p>
+      <div class="header-ornament" aria-hidden="true">
+        <span class="orn-diamond"></span>
+        <span class="orn-line"></span>
+        <span class="orn-diamond large"></span>
+        <span class="orn-line"></span>
+        <span class="orn-diamond"></span>
+      </div>
+    </header>
+
+    <!-- Tuning selector -->
+    <section class="section" aria-labelledby="tuning-label">
+      <p class="section-label" id="tuning-label">
+        Select Tuning · <span lang="ug" dir="rtl">تەڭشەش تاللاش</span>
+      </p>
+      <div class="tuning-buttons" role="group" aria-label="Tuning presets">
+        <button class="tuning-btn active" data-tuning="DA" onclick="setTuning('DA')">
+          D – A<br><span class="tuning-sub">Standard</span>
+        </button>
+        <button class="tuning-btn" data-tuning="GD" onclick="setTuning('GD')">
+          G – D<br><span class="tuning-sub">Low</span>
+        </button>
+        <button class="tuning-btn" data-tuning="EB" onclick="setTuning('EB')">
+          E – B<br><span class="tuning-sub">High</span>
+        </button>
+        <button class="tuning-btn" data-tuning="custom" onclick="openCustom()">
+          ✎ Custom<br><span class="tuning-sub" lang="ug" dir="rtl">ئالاھىدە</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Custom tuning modal -->
+    <div class="modal-overlay" id="customModal" role="dialog" aria-modal="true" aria-labelledby="custom-title" hidden>
+      <div class="modal">
+        <h2 class="modal-title" id="custom-title">Custom Tuning · <span lang="ug" dir="rtl">ئالاھىدە تەڭشەش</span></h2>
+        <div class="custom-inputs">
+          <div class="custom-input-group">
+            <label for="customS1">String 1 frequency (Hz)</label>
+            <input type="number" id="customS1" value="146.83" min="50" max="800" step="0.01" />
+          </div>
+          <div class="custom-input-group">
+            <label for="customS2">String 2 frequency (Hz)</label>
+            <input type="number" id="customS2" value="220.00" min="50" max="800" step="0.01" />
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn cancel" onclick="closeCustom()">Cancel</button>
+          <button class="modal-btn confirm" onclick="applyCustom()">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- String selector -->
+    <section class="string-tabs" role="group" aria-label="String selector">
+      <button class="string-tab active" id="tab1" onclick="selectString(0)" aria-pressed="true">
+        <span class="string-note" id="s1note">D</span>
+        <span class="string-label-en">String 1 · thick</span>
+        <span class="string-label-uy" lang="ug" dir="rtl">1-تەل · يوغان</span>
+      </button>
+      <button class="string-tab" id="tab2" onclick="selectString(1)" aria-pressed="false">
+        <span class="string-note" id="s2note">A</span>
+        <span class="string-label-en">String 2 · thin</span>
+        <span class="string-label-uy" lang="ug" dir="rtl">2-تەل · ئىنچىكە</span>
+      </button>
+    </section>
+
+    <!-- Meter card -->
+    <section class="meter-card" aria-label="Tuning meter">
+
+      <div class="detected-display">
+        <span class="detected-note" id="detectedNote" aria-live="polite" aria-label="Detected note">–</span>
+        <span class="detected-freq" id="freqLabel">Play a string to begin · تەلنى چىرتىڭ</span>
+        <span class="cents-readout" id="centsLabel" aria-live="polite"></span>
+      </div>
+
+      <!-- SVG needle gauge -->
+      <div class="gauge-wrap" role="img" aria-label="Tuning needle gauge">
+        <svg class="gauge-svg" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- Zone labels -->
+          <text x="18" y="112" class="gauge-label flat-label">♭ Flat</text>
+          <text x="246" y="112" class="gauge-label sharp-label">Sharp ♯</text>
+          <text x="130" y="16" class="gauge-label intune-label">In tune</text>
+          <!-- Track -->
+          <path d="M 35 110 A 125 125 0 0 1 285 110" fill="none" stroke="#D3C9A8" stroke-width="10" stroke-linecap="round"/>
+          <!-- Flat zone -->
+          <path d="M 35 110 A 125 125 0 0 1 100 28" fill="none" stroke="#B5D4F4" stroke-width="8" stroke-linecap="round" opacity="0.8"/>
+          <!-- Sharp zone -->
+          <path d="M 220 28 A 125 125 0 0 1 285 110" fill="none" stroke="#F5C4B3" stroke-width="8" stroke-linecap="round" opacity="0.8"/>
+          <!-- In-tune zone -->
+          <path d="M 130 16 A 125 125 0 0 1 190 16" fill="none" stroke="#97C459" stroke-width="10" stroke-linecap="round"/>
+          <!-- Tick marks -->
+          <line x1="35" y1="110" x2="43" y2="103" stroke="#B4A882" stroke-width="1.5"/>
+          <line x1="285" y1="110" x2="277" y2="103" stroke="#B4A882" stroke-width="1.5"/>
+          <line x1="160" y1="10" x2="160" y2="20" stroke="#B4A882" stroke-width="1.5"/>
+          <!-- Needle -->
+          <line id="needle" x1="160" y1="110" x2="160" y2="18"
+            stroke="#BA7517" stroke-width="3" stroke-linecap="round"
+            transform="rotate(0, 160, 110)"
+            style="transition: transform 0.12s ease-out;"/>
+          <!-- Pivot -->
+          <circle cx="160" cy="110" r="7" fill="#BA7517"/>
+          <circle cx="160" cy="110" r="3" fill="#fff"/>
+        </svg>
+      </div>
+
+      <!-- Status badge -->
+      <div class="status-badge waiting" id="statusBadge" aria-live="polite">
+        Waiting · <span lang="ug" dir="rtl">كۈتۈۋاتىدۇ</span>
+      </div>
+
+    </section>
+
+    <!-- Start / Stop button -->
+    <button class="start-btn" id="startBtn" onclick="toggleListening()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+      <span id="startBtnLabel">Start Tuning · تەڭشەشنى باشلاش</span>
+    </button>
+
+    <!-- Divider ornament -->
+    <div class="ornament-divider" aria-hidden="true">
+      <span class="orn-line"></span>
+      <span class="orn-diamond"></span>
+      <span class="orn-diamond large"></span>
+      <span class="orn-diamond"></span>
+      <span class="orn-line"></span>
+    </div>
+
+    <!-- Reference tone -->
+    <section class="ref-section" aria-labelledby="ref-label">
+      <p class="section-label" id="ref-label">
+        Reference Tone · <span lang="ug" dir="rtl">يەتكۈچ ئاۋازى</span>
+      </p>
+      <button class="ref-btn" id="refBtn" onclick="playRef()" aria-label="Play reference tone">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <span id="refBtnLabel">Play D (146.8 Hz)</span>
+      </button>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="ornament-divider" aria-hidden="true">
+        <span class="orn-line"></span>
+        <span class="orn-diamond"></span>
+        <span class="orn-diamond large"></span>
+        <span class="orn-diamond"></span>
+        <span class="orn-line"></span>
+      </div>
+      <p class="footer-text">
+        Made with ♥ by <a href="https://github.com/Tumaris-Paris" target="_blank" rel="noopener noreferrer">Tumaris Paris</a>
+        · For the Uyghur music community
+      </p>
+      <p class="footer-uy" lang="ug" dir="rtl">
+        ئۇيغۇر مۇزىكا جەمئىيىتى ئۈچۈن
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="js/tuner.js"></script>
+</body>
+</html>
