@@ -333,16 +333,16 @@ function updateDisplay(freq) {
   } else if (cents < 0) {
     // Flat — tune up
     const c = Math.round(Math.abs(cents));
-    centsEl.textContent = `${c} cents flat · تۆۋەن`;
+    centsEl.textContent = `-${c}`;
     centsEl.className   = 'cents-readout flat';
-    badge.textContent   = `▲ Tune up ${c}¢ · ئۆرلىتىڭ`;
+    badge.textContent   = '▲ Tune up · ئۆرلىتىڭ';
     badge.className     = 'status-badge flat';
   } else {
     // Sharp — tune down
     const c = Math.round(cents);
-    centsEl.textContent = `${c} cents sharp · يۇقىرى`;
+    centsEl.textContent = `+${c}`;
     centsEl.className   = 'cents-readout sharp';
-    badge.textContent   = `▼ Tune down ${c}¢ · چۈشۈرۈڭ`;
+    badge.textContent   = '▼ Tune down · چۈشۈرۈڭ';
     badge.className     = 'status-badge sharp';
   }
 
