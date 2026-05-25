@@ -125,69 +125,36 @@
 
       <!-- SVG needle gauge -->
       <div class="gauge-wrap" role="img" aria-label="Tuning needle gauge">
-        <svg class="gauge-svg" viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <!-- Flat zone gradient (blue) -->
-            <linearGradient id="flatGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#185FA5" stop-opacity="0.7"/>
-              <stop offset="100%" stop-color="#B5D4F4" stop-opacity="0.4"/>
-            </linearGradient>
-            <!-- Sharp zone gradient (rust) -->
-            <linearGradient id="sharpGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#F5C4B3" stop-opacity="0.4"/>
-              <stop offset="100%" stop-color="#993C1D" stop-opacity="0.7"/>
-            </linearGradient>
-            <!-- Needle gradient -->
-            <linearGradient id="needleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#854F0B"/>
-              <stop offset="100%" stop-color="#BA7517"/>
-            </linearGradient>
-          </defs>
-
-          <!-- Outer glow track -->
-          <path d="M 30 120 A 130 130 0 0 1 290 120" fill="none" stroke="#D3C9A8" stroke-width="14" stroke-linecap="round" opacity="0.3"/>
+        <svg class="gauge-svg" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
           <!-- Base track -->
-          <path d="M 30 120 A 130 130 0 0 1 290 120" fill="none" stroke="#E8DFC4" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 35 110 A 125 125 0 0 1 285 110" fill="none" stroke="#E8DFC4" stroke-width="12" stroke-linecap="round"/>
           <!-- Flat zone -->
-          <path d="M 30 120 A 130 130 0 0 1 97 32" fill="none" stroke="url(#flatGrad)" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 35 110 A 125 125 0 0 1 100 28" fill="none" stroke="#A8C8EE" stroke-width="12" stroke-linecap="round"/>
           <!-- Sharp zone -->
-          <path d="M 223 32 A 130 130 0 0 1 290 120" fill="none" stroke="url(#sharpGrad)" stroke-width="10" stroke-linecap="round"/>
+          <path d="M 220 28 A 125 125 0 0 1 285 110" fill="none" stroke="#E8A898" stroke-width="12" stroke-linecap="round"/>
           <!-- In-tune zone -->
-          <path d="M 135 17 A 130 130 0 0 1 185 17" fill="none" stroke="#7BBF3A" stroke-width="12" stroke-linecap="round"/>
-          <path d="M 135 17 A 130 130 0 0 1 185 17" fill="none" stroke="#97C459" stroke-width="8" stroke-linecap="round"/>
+          <path d="M 133 15 A 125 125 0 0 1 187 15" fill="none" stroke="#7BBF3A" stroke-width="12" stroke-linecap="round"/>
 
-          <!-- Tick marks — outer edge -->
-          <!-- far left -->
-          <line x1="30" y1="120" x2="40" y2="112" stroke="#B4A882" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- quarter left -->
-          <line x1="79" y1="55" x2="86" y2="63" stroke="#B4A882" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- center -->
-          <line x1="160" y1="10" x2="160" y2="22" stroke="#7BBF3A" stroke-width="2" stroke-linecap="round"/>
-          <!-- quarter right -->
-          <line x1="241" y1="55" x2="234" y2="63" stroke="#B4A882" stroke-width="1.5" stroke-linecap="round"/>
-          <!-- far right -->
-          <line x1="290" y1="120" x2="280" y2="112" stroke="#B4A882" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Tick marks -->
+          <line x1="35"  y1="110" x2="44"  y2="102" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="80"  y1="51"  x2="87"  y2="59"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="160" y1="10"  x2="160" y2="21"  stroke="#7BBF3A" stroke-width="2"   stroke-linecap="round"/>
+          <line x1="240" y1="51"  x2="233" y2="59"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="285" y1="110" x2="276" y2="102" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
 
-          <!-- Zone labels -->
-          <text x="14" y="138" class="gauge-label flat-label">♭</text>
-          <text x="272" y="138" class="gauge-label sharp-label">♯</text>
-          <text x="148" y="12" class="gauge-label intune-label">●</text>
+          <!-- Labels -->
+          <text x="16"  y="114" class="gauge-label flat-label">♭</text>
+          <text x="270" y="114" class="gauge-label sharp-label">♯</text>
 
-          <!-- Needle shadow -->
-          <line x1="162" y1="120" x2="162" y2="24"
-            stroke="rgba(0,0,0,0.08)" stroke-width="4" stroke-linecap="round"
-            transform="rotate(0, 160, 120)"/>
           <!-- Needle -->
-          <line id="needle" x1="160" y1="120" x2="160" y2="24"
-            stroke="url(#needleGrad)" stroke-width="3" stroke-linecap="round"
-            transform="rotate(0, 160, 120)"
+          <line id="needle" x1="160" y1="110" x2="160" y2="20"
+            stroke="#BA7517" stroke-width="2.5" stroke-linecap="round"
+            transform="rotate(0, 160, 110)"
             style="transition: transform 0.12s ease-out;"/>
-          <!-- Pivot outer ring -->
-          <circle cx="160" cy="120" r="9" fill="#D3C9A8"/>
-          <!-- Pivot fill -->
-          <circle cx="160" cy="120" r="7" fill="#BA7517"/>
-          <!-- Pivot highlight -->
-          <circle cx="160" cy="120" r="3" fill="#fff" opacity="0.9"/>
+          <!-- Pivot -->
+          <circle cx="160" cy="110" r="8" fill="#E8DFC4"/>
+          <circle cx="160" cy="110" r="6" fill="#BA7517"/>
+          <circle cx="160" cy="110" r="2.5" fill="#fff"/>
         </svg>
       </div>
 
