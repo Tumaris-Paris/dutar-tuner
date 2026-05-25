@@ -94,6 +94,7 @@ body {
 .header {
   text-align: center;
   padding: 0.75rem 0 1.25rem;
+  position: relative;
 }
 
 .title-row {
@@ -110,9 +111,13 @@ body {
 }
 
 .header-logo {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: auto;
-  height: 52px;
-  max-width: 48px;
+  height: 44px;
+  max-width: 44px;
   object-fit: contain;
 }
 
