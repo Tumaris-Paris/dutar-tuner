@@ -403,8 +403,11 @@ function playRef() {
 
   refOscillator.connect(refGain);
   refGain.connect(refAudioCtx.destination);
-  refOscillator.start();
-  refOscillator.stop(refAudioCtx.currentTime + 3);
+
+  refAudioCtx.resume().then(() => {
+    refOscillator.start();
+    refOscillator.stop(refAudioCtx.currentTime + 3);
+  });
 }
 
 /* ── Init ─────────────────────────────────────────────────────────────── */
