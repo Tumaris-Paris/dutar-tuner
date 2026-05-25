@@ -112,7 +112,7 @@ body {
 
 .header-logo {
   position: absolute;
-  right: 0.25rem;
+  right: 0.05rem;
   top: 50%;
   transform: translateY(-50%);
   width: auto;
