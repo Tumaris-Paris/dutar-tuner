@@ -319,7 +319,7 @@ function updateDisplay(freq) {
   const nearestNote = NOTE_NAMES[((Math.round(detectedMidi) % 12) + 12) % 12];
 
   document.getElementById('detectedNote').textContent = nearestNote;
-  document.getElementById('freqLabel').textContent = `${freq.toFixed(1)} Hz`;
+  document.getElementById('freqLabel').textContent = '';
 
   const centsEl = document.getElementById('centsLabel');
   const badge   = document.getElementById('statusBadge');
