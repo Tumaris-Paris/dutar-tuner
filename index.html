@@ -58,14 +58,14 @@
         Select Tuning · <span lang="ug" dir="rtl">تەڭشەك تاللاش</span>
       </p>
       <div class="tuning-buttons" role="group" aria-label="Tuning presets">
-        <button class="tuning-btn active" data-tuning="DA" onclick="setTuning('DA')">
-          D – A<br><span class="tuning-sub">Standard</span>
+        <button class="tuning-btn active" data-tuning="GD" onclick="setTuning('GD')">
+          G – D<br><span class="tuning-sub">Standard</span>
         </button>
-        <button class="tuning-btn" data-tuning="GD" onclick="setTuning('GD')">
-          G – D<br><span class="tuning-sub">Low</span>
+        <button class="tuning-btn" data-tuning="DA" onclick="setTuning('DA')">
+          D – A<br><span class="tuning-sub">High</span>
         </button>
-        <button class="tuning-btn" data-tuning="EB" onclick="setTuning('EB')">
-          E – B<br><span class="tuning-sub">High</span>
+        <button class="tuning-btn" data-tuning="AD" onclick="setTuning('AD')">
+          A – D<br><span class="tuning-sub">Atush</span>
         </button>
         <button class="tuning-btn" data-tuning="custom" onclick="openCustom()">
           ✎ Custom<br><span class="tuning-sub" lang="ug" dir="rtl">ئالاھىدە</span>
@@ -98,16 +98,16 @@
     <section class="string-tabs" role="group" aria-label="String selector">
       <button class="string-tab active" id="tab1" onclick="selectString(0)" aria-pressed="true">
         <span class="string-note" id="s1note">D</span>
-        <span class="string-label-en">String 1 · thick</span>
-        <span class="string-label-uy" lang="ug" dir="rtl">1-تارا</span>
+        <span class="string-label-en">Thick string</span>
+        <span class="string-label-uy" lang="ug" dir="rtl">بوڭ تارا</span>
         <span class="play-ref-btn" onclick="event.stopPropagation(); selectString(0); playRef();" aria-label="Play reference tone for string 1">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </span>
       </button>
       <button class="string-tab" id="tab2" onclick="selectString(1)" aria-pressed="false">
         <span class="string-note" id="s2note">A</span>
-        <span class="string-label-en">String 2 · thin</span>
-        <span class="string-label-uy" lang="ug" dir="rtl">2-تارا</span>
+        <span class="string-label-en">Thin string</span>
+        <span class="string-label-uy" lang="ug" dir="rtl">سا تارا</span>
         <span class="play-ref-btn" onclick="event.stopPropagation(); selectString(1); playRef();" aria-label="Play reference tone for string 2">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </span>

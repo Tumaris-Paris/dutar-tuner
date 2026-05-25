@@ -29,24 +29,24 @@
  * freq values are in Hz, corresponding to standard equal-temperament.
  *
  * | Preset | String 1 | String 2 | Common usage                  |
- * |--------|----------|----------|-------------------------------|
- * | DA     | D3 146.8 | A3 220.0 | Most common standard tuning   |
- * | GD     | G2  98.0 | D3 146.8 | Lower regional variant        |
- * | EB     | E3 164.8 | B3 246.9 | Higher variant                |
- * | custom | user-set | user-set | Entered manually              |
+ * |--------|----------|----------|---------------------------------|
+ * | GD     | G2  98.0 | D3 146.8 | Standard tuning                 |
+ * | DA     | D3 146.8 | A3 220.0 | Standard high tuning            |
+ * | AD     | A2 110.0 | D3 146.8 | Atush tuning                    |
+ * | custom | user-set | user-set | Entered manually                |
  */
 const TUNINGS = {
-  DA:     [{ note: 'D', freq: 146.83 }, { note: 'A', freq: 220.00 }],
   GD:     [{ note: 'G', freq:  98.00 }, { note: 'D', freq: 146.83 }],
-  EB:     [{ note: 'E', freq: 164.81 }, { note: 'B', freq: 246.94 }],
-  custom: [{ note: 'D', freq: 146.83 }, { note: 'A', freq: 220.00 }],
+  DA:     [{ note: 'D', freq: 146.83 }, { note: 'A', freq: 220.00 }],
+  AD:     [{ note: 'A', freq: 110.00 }, { note: 'D', freq: 146.83 }],
+  custom: [{ note: 'G', freq:  98.00 }, { note: 'D', freq: 146.83 }],
 };
 
 /** Chromatic note names (equal temperament). */
 const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 
 /* ── State ────────────────────────────────────────────────────────────── */
-let currentTuning   = 'DA';
+let currentTuning   = 'GD';
 let selectedString  = 0;
 let listening       = false;
 let audioCtx        = null;
