@@ -110,8 +110,9 @@ body {
 }
 
 .header-logo {
-  width: 56px;
-  height: 56px;
+  width: auto;
+  height: 52px;
+  max-width: 48px;
   object-fit: contain;
 }
 
