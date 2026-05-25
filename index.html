@@ -126,13 +126,23 @@
       <!-- SVG needle gauge -->
       <div class="gauge-wrap" role="img" aria-label="Tuning needle gauge">
         <svg class="gauge-svg" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flatGrad" x1="55" y1="115" x2="100" y2="29" gradientUnits="userSpaceOnUse">
+              <stop offset="0%"   stop-color="#4A90D9" stop-opacity="1"/>
+              <stop offset="100%" stop-color="#A8C8EE" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="sharpGrad" x1="220" y1="29" x2="265" y2="115" gradientUnits="userSpaceOnUse">
+              <stop offset="0%"   stop-color="#E8A898" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#C0503A" stop-opacity="1"/>
+            </linearGradient>
+          </defs>
           <!-- All arcs share circle: center (160,115) r=105 -->
           <!-- Base track -->
           <path d="M 55 115 A 105 105 0 0 1 265 115" fill="none" stroke="#E8DFC4" stroke-width="12" stroke-linecap="round"/>
           <!-- Flat zone -->
-          <path d="M 55 115 A 105 105 0 0 1 100 29" fill="none" stroke="#A8C8EE" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 55 115 A 105 105 0 0 1 100 29" fill="none" stroke="url(#flatGrad)" stroke-width="12" stroke-linecap="round"/>
           <!-- Sharp zone -->
-          <path d="M 220 29 A 105 105 0 0 1 265 115" fill="none" stroke="#E8A898" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 220 29 A 105 105 0 0 1 265 115" fill="none" stroke="url(#sharpGrad)" stroke-width="12" stroke-linecap="round"/>
           <!-- In-tune zone -->
           <path d="M 142 12 A 105 105 0 0 1 178 12" fill="none" stroke="#7BBF3A" stroke-width="12" stroke-linecap="round"/>
 
