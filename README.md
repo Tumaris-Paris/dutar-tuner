@@ -1,4 +1,4 @@
-# 🎵 Dutar Tuner — دۇتار تەڭشەگۈچ
+# 🎵 Dutar Tuner — دۇتار تەڭشىگۈچ
 
 A free, open-source, bilingual web-based chromatic tuner for the **Dutar** — a traditional two-stringed Uyghur instrument.
 
