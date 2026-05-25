@@ -105,7 +105,53 @@ function updateRefBtn() {
 /* ── Custom tuning modal ──────────────────────────────────────────────── */
 
 /** Show the custom tuning input modal. */
+// Base note octave assignments keeping thin string in dutar range (~130–330 Hz)
+const BASE_OCTAVES = { C: 4, D: 4, E: 3, F: 3, G: 3, A: 3, B: 3 };
+
+// Interval in semitones: fifth = 7, fourth = 5
+const INTERVAL_SEMITONES = { fifth: 7, fourth: 5 };
+
+// Note order for calculating note names
+const NOTE_ORDER = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+
+function noteToFreq(note, octave) {
+  const semitone = NOTE_ORDER.indexOf(note);
+  const midi = (parseInt(octave) + 1) * 12 + semitone;
+  return 440 * Math.pow(2, (midi - 69) / 12);
+}
+
+function thickNoteFromThin(thinNote, method) {
+  const semitones = INTERVAL_SEMITONES[method];
+  const thinIdx = NOTE_ORDER.indexOf(thinNote);
+  // thick string is interval below thin string
+  return NOTE_ORDER[(thinIdx - semitones + 12) % 12];
+}
+
+function updateCustomPreview() {
+  const activeThin   = document.querySelector('.base-btn.active');
+  const activeMethod = document.querySelector('.method-btn.active');
+  if (!activeThin || !activeMethod) return;
+  const thinNote  = activeThin.dataset.note;
+  const method    = activeMethod.dataset.method;
+  const thickNote = thickNoteFromThin(thinNote, method);
+  document.getElementById('previewS1').textContent = thickNote;
+  document.getElementById('previewS2').textContent = thinNote;
+}
+
+function selectMethod(btn) {
+  document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateCustomPreview();
+}
+
+function selectBase(btn) {
+  document.querySelectorAll('.base-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateCustomPreview();
+}
+
 function openCustom() {
+  updateCustomPreview();
   document.getElementById('customModal').removeAttribute('hidden');
 }
 
@@ -114,22 +160,20 @@ function closeCustom() {
   document.getElementById('customModal').setAttribute('hidden', '');
 }
 
-/**
- * Read custom Hz values from the modal inputs, validate them,
- * update the TUNINGS.custom preset, and apply it.
- */
 function applyCustom() {
-  const f1 = parseFloat(document.getElementById('customS1').value);
-  const f2 = parseFloat(document.getElementById('customS2').value);
+  const activeThin   = document.querySelector('.base-btn.active');
+  const activeMethod = document.querySelector('.method-btn.active');
+  const thinNote  = activeThin.dataset.note;
+  const method    = activeMethod.dataset.method;
+  const thickNote = thickNoteFromThin(thinNote, method);
+  const thinOct   = BASE_OCTAVES[thinNote];
+  const thinMidi  = (thinOct + 1) * 12 + NOTE_ORDER.indexOf(thinNote);
+  const thickMidi = thinMidi - INTERVAL_SEMITONES[method];
+  const f1 = 440 * Math.pow(2, (thickMidi - 69) / 12);
+  const f2 = 440 * Math.pow(2, (thinMidi  - 69) / 12);
 
-  if (!isFinite(f1) || !isFinite(f2) || f1 < 50 || f2 < 50) {
-    alert('Please enter valid frequencies above 50 Hz.');
-    return;
-  }
-
-  // Derive a note name for display (nearest chromatic note)
-  TUNINGS.custom[0] = { note: freqToClosestNoteName(f1), freq: f1 };
-  TUNINGS.custom[1] = { note: freqToClosestNoteName(f2), freq: f2 };
+  TUNINGS.custom[0] = { note: thickNote, freq: f1 };
+  TUNINGS.custom[1] = { note: thinNote,  freq: f2 };
 
   currentTuning = 'custom';
   document.querySelectorAll('.tuning-btn').forEach(btn => {
@@ -391,22 +435,43 @@ function playRef() {
   }
 
   const targetFreq = TUNINGS[currentTuning][selectedString].freq;
-  refAudioCtx  = new (window.AudioContext || window.webkitAudioContext)();
-  refOscillator = refAudioCtx.createOscillator();
-  refGain       = refAudioCtx.createGain();
+  refAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-  refOscillator.type            = 'triangle'; // warmer than sine, closer to plucked string
-  refOscillator.frequency.value = targetFreq;
-  refGain.gain.setValueAtTime(0.35, refAudioCtx.currentTime);
-  refGain.gain.exponentialRampToValueAtTime(0.001, refAudioCtx.currentTime + 3);
+  const now = refAudioCtx.currentTime;
+  const duration = 3;
 
-  refOscillator.connect(refGain);
-  refGain.connect(refAudioCtx.destination);
+  // Harmonics: [multiplier, relative volume] — simulates plucked string timbre
+  const harmonics = [
+    [1,    0.5],
+    [2,    0.25],
+    [3,    0.12],
+    [4,    0.08],
+    [5,    0.05],
+  ];
 
-  refAudioCtx.resume().then(() => {
-    refOscillator.start();
-    refOscillator.stop(refAudioCtx.currentTime + 3);
+  // Master gain with pluck envelope: instant attack, slow decay
+  const masterGain = refAudioCtx.createGain();
+  masterGain.gain.setValueAtTime(0.0001, now);
+  masterGain.gain.linearRampToValueAtTime(0.6, now + 0.005); // fast attack (~5ms)
+  masterGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  masterGain.connect(refAudioCtx.destination);
+
+  harmonics.forEach(([mult, vol]) => {
+    const osc = refAudioCtx.createOscillator();
+    const gain = refAudioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = targetFreq * mult;
+    gain.gain.value = vol;
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(now);
+    osc.stop(now + duration);
   });
+
+  // Keep a reference so we can stop it if tapped again
+  refOscillator = { stop: () => { try { refAudioCtx.close(); } catch(_){} } };
+
+  refAudioCtx.resume();
 }
 
 /* ── Init ─────────────────────────────────────────────────────────────── */

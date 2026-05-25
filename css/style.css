@@ -132,7 +132,7 @@ body {
 
 .title-uy {
   font-family: var(--font-uyghur);
-  font-size: 20px;
+  font-size: 25px;
   color: var(--rust);
   margin-bottom: 0.25rem;
 }
@@ -275,12 +275,12 @@ body {
 }
 
 .string-label-en {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
 .string-label-uy {
-  font-size: 11px;
+  font-size: 18px;
   color: var(--text-muted);
   font-family: var(--font-uyghur);
 }
@@ -519,6 +519,102 @@ body {
 }
 
 .custom-input-group input:focus {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.note-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.note-picker-labels {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.note-picker-labels span {
+  flex: 1;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.method-picker {
+  display: flex;
+  gap: 8px;
+}
+
+.method-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.method-btn.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fff;
+}
+
+.base-note-picker {
+  display: flex;
+  gap: 6px;
+}
+
+.base-btn {
+  flex: 1;
+  padding: 10px 4px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  text-align: center;
+}
+
+.base-btn.active {
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fff;
+}
+
+.custom-preview {
+  text-align: center;
+  padding: 10px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.note-picker select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.note-picker select:focus {
   outline: 2px solid var(--gold);
   outline-offset: 1px;
 }
