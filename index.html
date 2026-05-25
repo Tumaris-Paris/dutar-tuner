@@ -126,35 +126,36 @@
       <!-- SVG needle gauge -->
       <div class="gauge-wrap" role="img" aria-label="Tuning needle gauge">
         <svg class="gauge-svg" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- All arcs share circle: center (160,115) r=105 -->
           <!-- Base track -->
-          <path d="M 35 110 A 125 125 0 0 1 285 110" fill="none" stroke="#E8DFC4" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 55 115 A 105 105 0 0 1 265 115" fill="none" stroke="#E8DFC4" stroke-width="12" stroke-linecap="round"/>
           <!-- Flat zone -->
-          <path d="M 35 110 A 125 125 0 0 1 100 28" fill="none" stroke="#A8C8EE" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 55 115 A 105 105 0 0 1 100 29" fill="none" stroke="#A8C8EE" stroke-width="12" stroke-linecap="round"/>
           <!-- Sharp zone -->
-          <path d="M 220 28 A 125 125 0 0 1 285 110" fill="none" stroke="#E8A898" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 220 29 A 105 105 0 0 1 265 115" fill="none" stroke="#E8A898" stroke-width="12" stroke-linecap="round"/>
           <!-- In-tune zone -->
-          <path d="M 133 15 A 125 125 0 0 1 187 15" fill="none" stroke="#7BBF3A" stroke-width="12" stroke-linecap="round"/>
+          <path d="M 142 12 A 105 105 0 0 1 178 12" fill="none" stroke="#7BBF3A" stroke-width="12" stroke-linecap="round"/>
 
-          <!-- Tick marks -->
-          <line x1="35"  y1="110" x2="44"  y2="102" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="80"  y1="51"  x2="87"  y2="59"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="160" y1="10"  x2="160" y2="21"  stroke="#7BBF3A" stroke-width="2"   stroke-linecap="round"/>
-          <line x1="240" y1="51"  x2="233" y2="59"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="285" y1="110" x2="276" y2="102" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Tick marks (radial, crossing the track) -->
+          <line x1="48"  y1="115" x2="62"  y2="115" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="81"  y1="36"  x2="91"  y2="46"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="160" y1="3"   x2="160" y2="17"  stroke="#7BBF3A" stroke-width="2"   stroke-linecap="round"/>
+          <line x1="239" y1="36"  x2="229" y2="46"  stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="272" y1="115" x2="258" y2="115" stroke="#C4B896" stroke-width="1.5" stroke-linecap="round"/>
 
           <!-- Labels -->
-          <text x="16"  y="114" class="gauge-label flat-label">♭</text>
-          <text x="270" y="114" class="gauge-label sharp-label">♯</text>
+          <text x="30"  y="128" class="gauge-label flat-label">♭</text>
+          <text x="278" y="128" class="gauge-label sharp-label">♯</text>
 
           <!-- Needle -->
-          <line id="needle" x1="160" y1="110" x2="160" y2="20"
+          <line id="needle" x1="160" y1="115" x2="160" y2="12"
             stroke="#BA7517" stroke-width="2.5" stroke-linecap="round"
-            transform="rotate(0, 160, 110)"
+            transform="rotate(0, 160, 115)"
             style="transition: transform 0.12s ease-out;"/>
           <!-- Pivot -->
-          <circle cx="160" cy="110" r="8" fill="#E8DFC4"/>
-          <circle cx="160" cy="110" r="6" fill="#BA7517"/>
-          <circle cx="160" cy="110" r="2.5" fill="#fff"/>
+          <circle cx="160" cy="115" r="8" fill="#E8DFC4"/>
+          <circle cx="160" cy="115" r="6" fill="#BA7517"/>
+          <circle cx="160" cy="115" r="2.5" fill="#fff"/>
         </svg>
       </div>
 

@@ -358,7 +358,7 @@ function rotateNeedle(cents) {
   const clamped = Math.max(-50, Math.min(50, cents));
   const angle   = (clamped / 50) * 80; // map ±50¢ to ±80°
   document.getElementById('needle').setAttribute(
-    'transform', `rotate(${angle}, 160, 110)`
+    'transform', `rotate(${angle}, 160, 115)`
   );
 }
 
