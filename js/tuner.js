@@ -70,7 +70,6 @@ function setTuning(tuning) {
     btn.classList.toggle('active', btn.dataset.tuning === tuning);
   });
   updateStringTabs();
-  updateRefBtn();
   resetMeter();
 }
 
@@ -86,8 +85,8 @@ function selectString(idx) {
   tab2.classList.toggle('active', idx === 1);
   tab1.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
   tab2.setAttribute('aria-pressed', idx === 1 ? 'true' : 'false');
-  updateRefBtn();
   resetMeter();
+  playRef();
 }
 
 /** Re-render string tab note names from current tuning. */
@@ -139,7 +138,6 @@ function applyCustom() {
   });
 
   updateStringTabs();
-  updateRefBtn();
   resetMeter();
   closeCustom();
 }
@@ -414,7 +412,6 @@ function playRef() {
 /** Run once on page load to populate the UI with default values. */
 function init() {
   updateStringTabs();
-  updateRefBtn();
 }
 
 init();
