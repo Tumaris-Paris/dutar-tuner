@@ -226,6 +226,7 @@ body {
   cursor: pointer;
   transition: all 0.15s;
   font-family: var(--font-body);
+  position: relative;
 }
 
 .string-tab.active {
@@ -257,6 +258,35 @@ body {
   font-size: 11px;
   color: var(--text-muted);
   font-family: var(--font-uyghur);
+}
+
+.play-ref-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--parchment);
+  color: var(--gold);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.string-tab.active .play-ref-btn {
+  background: rgba(255,255,255,0.3);
+  border-color: rgba(255,255,255,0.5);
+  color: #fff;
+}
+
+.play-ref-btn:hover {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
 }
 
 /* ── Meter card ──────────────────────────────────────────────────────── */

@@ -86,7 +86,6 @@ function selectString(idx) {
   tab1.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
   tab2.setAttribute('aria-pressed', idx === 1 ? 'true' : 'false');
   resetMeter();
-  playRef();
 }
 
 /** Re-render string tab note names from current tuning. */
