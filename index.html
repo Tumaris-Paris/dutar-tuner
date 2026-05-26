@@ -88,7 +88,7 @@
 
         <div class="custom-inputs">
           <div class="custom-input-group">
-            <label>Tuning Method · <span lang="ug" dir="rtl">پەدە ئۇسۇلى</span></label>
+            <label>Tuning Method · <span lang="ug" dir="rtl">پەدە ئۇسلۇبى</span></label>
             <div class="method-picker">
               <button class="method-btn active" data-method="fifth" onclick="selectMethod(this)">
                 Standard<br><span lang="ug" dir="rtl">ئادەتتىكى</span>
@@ -100,15 +100,15 @@
           </div>
 
           <div class="custom-input-group">
-            <label>Thin String (your target note)</label>
-            <div class="base-note-picker">
-              <button class="base-btn" data-note="C" onclick="selectBase(this)">C</button>
-              <button class="base-btn active" data-note="D" onclick="selectBase(this)">D</button>
-              <button class="base-btn" data-note="E" onclick="selectBase(this)">E</button>
-              <button class="base-btn" data-note="F" onclick="selectBase(this)">F</button>
-              <button class="base-btn" data-note="G" onclick="selectBase(this)">G</button>
-              <button class="base-btn" data-note="A" onclick="selectBase(this)">A</button>
-              <button class="base-btn" data-note="B" onclick="selectBase(this)">B</button>
+            <label>Pitch · <span lang="ug" dir="rtl">پەدە</span></label>
+            <div class="offset-picker">
+              <button class="offset-btn" data-offset="-3" onclick="selectOffset(this)">−3</button>
+              <button class="offset-btn" data-offset="-2" onclick="selectOffset(this)">−2</button>
+              <button class="offset-btn" data-offset="-1" onclick="selectOffset(this)">−1</button>
+              <button class="offset-btn active" data-offset="0" onclick="selectOffset(this)">0</button>
+              <button class="offset-btn" data-offset="1" onclick="selectOffset(this)">+1</button>
+              <button class="offset-btn" data-offset="2" onclick="selectOffset(this)">+2</button>
+              <button class="offset-btn" data-offset="3" onclick="selectOffset(this)">+3</button>
             </div>
           </div>
 
@@ -137,7 +137,7 @@
       <button class="string-tab" id="tab2" onclick="selectString(1)" aria-pressed="false">
         <span class="string-note" id="s2note">A</span>
         <span class="string-label-en">Thin string</span>
-        <span class="string-label-uy" lang="ug" dir="rtl">سا تارا</span>
+        <span class="string-label-uy" lang="ug" dir="rtl">زىل تارا</span>
         <span class="play-ref-btn" onclick="event.stopPropagation(); selectString(1); playRef();" aria-label="Play reference tone for string 2">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </span>

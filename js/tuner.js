@@ -105,37 +105,57 @@ function updateRefBtn() {
 /* ── Custom tuning modal ──────────────────────────────────────────────── */
 
 /** Show the custom tuning input modal. */
-// Base note octave assignments keeping thin string in dutar range (~130–330 Hz)
-const BASE_OCTAVES = { C: 4, D: 4, E: 3, F: 3, G: 3, A: 3, B: 3 };
+// Natural notes in order and their semitones from C
+const NATURAL_NOTES    = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const NOTE_SEMITONES   = { C:0, D:2, E:4, F:5, G:7, A:9, B:11 };
 
-// Interval in semitones: fifth = 7, fourth = 5
+// Base thick string for each method: Standard = G2, Atush = A2
+const CUSTOM_BASE = {
+  fifth:  { note: 'G', octave: 2 },
+  fourth: { note: 'A', octave: 2 },
+};
+
+// Interval semitones above thick string
 const INTERVAL_SEMITONES = { fifth: 7, fourth: 5 };
 
-// Note order for calculating note names
-const NOTE_ORDER = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function noteOctaveToMidi(note, octave) {
+  return (octave + 1) * 12 + NOTE_SEMITONES[note];
+}
 
-function noteToFreq(note, octave) {
-  const semitone = NOTE_ORDER.indexOf(note);
-  const midi = (parseInt(octave) + 1) * 12 + semitone;
+function midiToFreq(midi) {
   return 440 * Math.pow(2, (midi - 69) / 12);
 }
 
-function thickNoteFromThin(thinNote, method) {
-  const semitones = INTERVAL_SEMITONES[method];
-  const thinIdx = NOTE_ORDER.indexOf(thinNote);
-  // thick string is interval below thin string
-  return NOTE_ORDER[(thinIdx - semitones + 12) % 12];
+function naturalNoteAtOffset(baseNote, baseOctave, offset) {
+  let idx = NATURAL_NOTES.indexOf(baseNote) + offset;
+  let oct = baseOctave;
+  while (idx < 0)  { idx += 7; oct--; }
+  while (idx >= 7) { idx -= 7; oct++; }
+  return { note: NATURAL_NOTES[idx], octave: oct };
+}
+
+function getCustomStrings(method, offset) {
+  const base      = CUSTOM_BASE[method];
+  const thick     = naturalNoteAtOffset(base.note, base.octave, offset);
+  const thickMidi = noteOctaveToMidi(thick.note, thick.octave);
+  const thinMidi  = thickMidi + INTERVAL_SEMITONES[method];
+  // Get thin note name from MIDI
+  const thinSemitone = thinMidi % 12;
+  const allNotes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+  const thinNote = allNotes[thinSemitone];
+  return {
+    thick: { note: thick.note, freq: midiToFreq(thickMidi) },
+    thin:  { note: thinNote,   freq: midiToFreq(thinMidi)  },
+  };
 }
 
 function updateCustomPreview() {
-  const activeThin   = document.querySelector('.base-btn.active');
+  const activeOffset = document.querySelector('.offset-btn.active');
   const activeMethod = document.querySelector('.method-btn.active');
-  if (!activeThin || !activeMethod) return;
-  const thinNote  = activeThin.dataset.note;
-  const method    = activeMethod.dataset.method;
-  const thickNote = thickNoteFromThin(thinNote, method);
-  document.getElementById('previewS1').textContent = thickNote;
-  document.getElementById('previewS2').textContent = thinNote;
+  if (!activeOffset || !activeMethod) return;
+  const strings = getCustomStrings(activeMethod.dataset.method, parseInt(activeOffset.dataset.offset));
+  document.getElementById('previewS1').textContent = strings.thick.note;
+  document.getElementById('previewS2').textContent = strings.thin.note;
 }
 
 function selectMethod(btn) {
@@ -144,8 +164,8 @@ function selectMethod(btn) {
   updateCustomPreview();
 }
 
-function selectBase(btn) {
-  document.querySelectorAll('.base-btn').forEach(b => b.classList.remove('active'));
+function selectOffset(btn) {
+  document.querySelectorAll('.offset-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   updateCustomPreview();
 }
@@ -161,19 +181,12 @@ function closeCustom() {
 }
 
 function applyCustom() {
-  const activeThin   = document.querySelector('.base-btn.active');
+  const activeOffset = document.querySelector('.offset-btn.active');
   const activeMethod = document.querySelector('.method-btn.active');
-  const thinNote  = activeThin.dataset.note;
-  const method    = activeMethod.dataset.method;
-  const thickNote = thickNoteFromThin(thinNote, method);
-  const thinOct   = BASE_OCTAVES[thinNote];
-  const thinMidi  = (thinOct + 1) * 12 + NOTE_ORDER.indexOf(thinNote);
-  const thickMidi = thinMidi - INTERVAL_SEMITONES[method];
-  const f1 = 440 * Math.pow(2, (thickMidi - 69) / 12);
-  const f2 = 440 * Math.pow(2, (thinMidi  - 69) / 12);
+  const strings = getCustomStrings(activeMethod.dataset.method, parseInt(activeOffset.dataset.offset));
 
-  TUNINGS.custom[0] = { note: thickNote, freq: f1 };
-  TUNINGS.custom[1] = { note: thinNote,  freq: f2 };
+  TUNINGS.custom[0] = strings.thick;
+  TUNINGS.custom[1] = strings.thin;
 
   currentTuning = 'custom';
   document.querySelectorAll('.tuning-btn').forEach(btn => {

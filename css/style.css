@@ -567,26 +567,31 @@ body {
   color: #fff;
 }
 
-.base-note-picker {
+.offset-picker {
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 
-.base-btn {
+.offset-btn {
   flex: 1;
-  padding: 10px 4px;
+  padding: 10px 2px;
   border: 2px solid var(--border);
   border-radius: var(--radius-sm);
   background: #fff;
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text);
   cursor: pointer;
   text-align: center;
 }
 
-.base-btn.active {
+.offset-btn[data-offset="0"] {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.offset-btn.active {
   border-color: var(--gold);
   background: var(--gold);
   color: #fff;
