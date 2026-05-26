@@ -453,24 +453,33 @@ function playRef() {
   const now = refAudioCtx.currentTime;
   const duration = 3;
 
-  // Harmonics: [multiplier, relative volume] — simulates plucked string timbre
+  // Dynamics compressor — maximizes perceived loudness
+  const compressor = refAudioCtx.createDynamicsCompressor();
+  compressor.threshold.value = -24;
+  compressor.knee.value      = 10;
+  compressor.ratio.value     = 12;
+  compressor.attack.value    = 0.003;
+  compressor.release.value   = 0.25;
+  compressor.connect(refAudioCtx.destination);
+
+  // Harmonics: [multiplier, gain] — boosted for audibility on phone speakers
   const harmonics = [
-    [1,    0.5],
-    [2,    0.25],
-    [3,    0.12],
-    [4,    0.08],
-    [5,    0.05],
+    [1,   1.0],
+    [2,   0.7],
+    [3,   0.4],
+    [4,   0.25],
+    [5,   0.15],
   ];
 
-  // Master gain with pluck envelope: instant attack, slow decay
+  // Master gain with pluck envelope
   const masterGain = refAudioCtx.createGain();
   masterGain.gain.setValueAtTime(0.0001, now);
-  masterGain.gain.linearRampToValueAtTime(0.6, now + 0.005); // fast attack (~5ms)
+  masterGain.gain.linearRampToValueAtTime(1.5, now + 0.005);
   masterGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-  masterGain.connect(refAudioCtx.destination);
+  masterGain.connect(compressor);
 
   harmonics.forEach(([mult, vol]) => {
-    const osc = refAudioCtx.createOscillator();
+    const osc  = refAudioCtx.createOscillator();
     const gain = refAudioCtx.createGain();
     osc.type = 'sine';
     osc.frequency.value = targetFreq * mult;
@@ -481,9 +490,7 @@ function playRef() {
     osc.stop(now + duration);
   });
 
-  // Keep a reference so we can stop it if tapped again
   refOscillator = { stop: () => { try { refAudioCtx.close(); } catch(_){} } };
-
   refAudioCtx.resume();
 }
 
