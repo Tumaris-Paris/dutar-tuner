@@ -216,6 +216,13 @@ body {
   margin-top: 2px;
 }
 
+.tuning-btn .tuning-sub[lang="ug"],
+.tuning-btn .tuning-sub [lang="ug"] {
+  font-family: var(--font-uyghur);
+  font-size: 16px;
+  line-height: 1;
+}
+
 .tuning-btn.active {
   background: var(--gold);
   border-color: var(--gold);
