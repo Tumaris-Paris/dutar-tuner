@@ -31,13 +31,11 @@
  * | Preset | String 1 | String 2 | Common usage                  |
  * |--------|----------|----------|---------------------------------|
  * | GD     | G2  98.0 | D3 146.8 | Standard tuning                 |
- * | DA     | D3 146.8 | A3 220.0 | Standard high tuning            |
  * | AD     | A2 110.0 | D3 146.8 | Atush tuning                    |
- * | custom | user-set | user-set | Entered manually                |
+ * | custom | user-set | user-set | Method + pitch offset           |
  */
 const TUNINGS = {
   GD:     [{ note: 'G', freq:  98.00 }, { note: 'D', freq: 146.83 }],
-  DA:     [{ note: 'D', freq: 146.83 }, { note: 'A', freq: 220.00 }],
   AD:     [{ note: 'A', freq: 110.00 }, { note: 'D', freq: 146.83 }],
   custom: [{ note: 'G', freq:  98.00 }, { note: 'D', freq: 146.83 }],
 };
@@ -61,7 +59,7 @@ let refAudioCtx     = null;
 
 /**
  * Switch to a named tuning preset and refresh the UI.
- * @param {string} tuning - Key from TUNINGS ('DA', 'GD', 'EB', 'custom').
+ * @param {string} tuning - Key from TUNINGS ('GD', 'AD', 'custom').
  */
 function setTuning(tuning) {
   if (tuning === 'custom') { openCustom(); return; }
@@ -422,7 +420,7 @@ function rotateNeedle(cents) {
 /** Reset the meter to its idle state. */
 function resetMeter() {
   document.getElementById('detectedNote').textContent = '–';
-  document.getElementById('freqLabel').textContent    = 'Play a string to begin · تەلنى چىرتىڭ';
+  document.getElementById('freqLabel').textContent    = 'Play a string to begin · تارىنى چېلىڭ';
   document.getElementById('centsLabel').textContent   = '';
   document.getElementById('centsLabel').className     = 'cents-readout';
   document.getElementById('statusBadge').textContent  = 'Waiting · كۈتۈۋاتىدۇ';
