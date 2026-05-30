@@ -406,12 +406,13 @@ function updateDisplay(freq) {
 
 /**
  * Rotate the SVG tuning needle.
- * 0 cents → vertical (12 o'clock). ±50 cents → ±80° from vertical.
+ * Uses an arctangent scale so the needle always moves, even when far off pitch.
+ * ±25 cents → ~±51°, ±100 cents → ~±66°, ±500 cents → ~±77°.
+ * No hard clamp — large deviations compress toward the edge rather than sticking.
  * @param {number} cents - Offset in cents from target (negative = flat).
  */
 function rotateNeedle(cents) {
-  const clamped = Math.max(-50, Math.min(50, cents));
-  const angle   = (clamped / 50) * 80; // map ±50¢ to ±80°
+  const angle = Math.atan(cents / 25) / (Math.PI / 2) * 80;
   document.getElementById('needle').setAttribute(
     'transform', `rotate(${angle}, 160, 115)`
   );
