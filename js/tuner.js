@@ -54,6 +54,7 @@ let animFrame       = null;
 let refOscillator   = null;
 let refGain         = null;
 let refAudioCtx     = null;
+let smoothedCents   = null; // EMA-smoothed cents for stable needle
 
 /* ── Tuning selection ─────────────────────────────────────────────────── */
 
@@ -279,7 +280,17 @@ function detectLoop() {
   const freq = autoCorrelate(buffer, audioCtx.sampleRate);
 
   if (freq > 50 && freq < 2000) {
-    updateDisplay(freq);
+    // Compute raw cents then smooth with EMA (α=0.25) for a stable needle
+    const target       = TUNINGS[currentTuning][selectedString];
+    const detectedMidi = 12 * Math.log2(freq / 440) + 69;
+    const targetMidi   = 12 * Math.log2(target.freq / 440) + 69;
+    const rawCents     = (detectedMidi - targetMidi) * 100;
+    smoothedCents = smoothedCents === null
+      ? rawCents
+      : 0.25 * rawCents + 0.75 * smoothedCents;
+    updateDisplay(freq, smoothedCents);
+  } else {
+    smoothedCents = null; // reset on silence so next pluck starts fresh
   }
 
   animFrame = requestAnimationFrame(detectLoop);
@@ -305,11 +316,11 @@ function detectLoop() {
 function autoCorrelate(buffer, sampleRate) {
   const size = buffer.length;
 
-  // 1. RMS energy gate — silence check
+  // 1. RMS energy gate — reject ambient noise below threshold
   let rms = 0;
   for (let i = 0; i < size; i++) rms += buffer[i] * buffer[i];
   rms = Math.sqrt(rms / size);
-  if (rms < 0.01) return -1;
+  if (rms < 0.025) return -1; // raised from 0.01 to reject quiet noise
 
   // 2. Trim silence from edges
   let r1 = 0;
@@ -341,7 +352,11 @@ function autoCorrelate(buffer, sampleRate) {
     if (acf[i] > maxVal) { maxVal = acf[i]; maxPos = i; }
   }
 
-  // 5. Parabolic interpolation for sub-sample accuracy
+  // 5. Confidence check — normalized correlation coefficient
+  // If the best peak is < 45% of zero-lag energy, signal is too noisy
+  if (acf[0] === 0 || acf[maxPos] / acf[0] < 0.45) return -1;
+
+  // 6. Parabolic interpolation for sub-sample accuracy
   let T0 = maxPos;
   if (T0 > 0 && T0 < tLen - 1) {
     const x1 = acf[T0 - 1];
@@ -364,11 +379,11 @@ function autoCorrelate(buffer, sampleRate) {
  *
  * @param {number} freq - Detected frequency in Hz.
  */
-function updateDisplay(freq) {
+function updateDisplay(freq, cents) {
   const target     = TUNINGS[currentTuning][selectedString];
   const detectedMidi = 12 * Math.log2(freq / 440) + 69;
   const targetMidi   = 12 * Math.log2(target.freq / 440) + 69;
-  const cents        = (detectedMidi - targetMidi) * 100; // positive = sharp
+  if (cents === undefined) cents = (detectedMidi - targetMidi) * 100; // positive = sharp
 
   // Nearest chromatic note name
   const nearestNote = NOTE_NAMES[((Math.round(detectedMidi) % 12) + 12) % 12];
@@ -407,12 +422,12 @@ function updateDisplay(freq) {
 /**
  * Rotate the SVG tuning needle.
  * Uses an arctangent scale so the needle always moves, even when far off pitch.
- * ±25 cents → ~±51°, ±100 cents → ~±66°, ±500 cents → ~±77°.
+ * ±25 cents → ~±20°, ±100 cents → ~±52°, ±500 cents → ~±74°.
  * No hard clamp — large deviations compress toward the edge rather than sticking.
  * @param {number} cents - Offset in cents from target (negative = flat).
  */
 function rotateNeedle(cents) {
-  const angle = Math.atan(cents / 25) / (Math.PI / 2) * 80;
+  const angle = Math.atan(cents / 60) / (Math.PI / 2) * 80;
   document.getElementById('needle').setAttribute(
     'transform', `rotate(${angle}, 160, 115)`
   );
