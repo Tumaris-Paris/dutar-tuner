@@ -90,6 +90,53 @@ body {
   padding: 1.5rem 1.25rem 2rem;
 }
 
+/* ── Maintenance mode ────────────────────────────────────────────────── */
+.maintenance-screen {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem 1.25rem;
+}
+
+.maintenance-card {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 20px rgba(44, 26, 14, 0.08);
+  padding: 2rem 1.25rem;
+}
+
+.maintenance-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--gold-dark);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.5px;
+}
+
+.maintenance-title-uy {
+  font-family: var(--font-uyghur);
+  font-size: 30px;
+  color: var(--rust);
+  margin-bottom: 1rem;
+}
+
+.maintenance-text {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.maintenance-text + .maintenance-text {
+  margin-top: 0.35rem;
+}
+
 /* ── Header ──────────────────────────────────────────────────────────── */
 .header {
   text-align: center;

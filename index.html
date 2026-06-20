@@ -30,9 +30,24 @@
 </head>
 <body>
 
+  <script>
+    // Toggle this to quickly disable/enable the app UI.
+    const MAINTENANCE_MODE = true;
+    window.MAINTENANCE_MODE = MAINTENANCE_MODE;
+  </script>
+
   <div class="bg-pattern" aria-hidden="true"></div>
 
-  <main class="app" role="main">
+  <main class="maintenance-screen" id="maintenanceScreen" role="main" hidden>
+    <div class="maintenance-card">
+      <h1 class="maintenance-title">Temporarily Unavailable</h1>
+      <p class="maintenance-title-uy" lang="ug" dir="rtl">ۋاقىتلىق ئىشلىتىشكە بولمايدۇ</p>
+      <p class="maintenance-text">Dutar Tuner is under maintenance. Please check back soon.</p>
+      <p class="maintenance-text" lang="ug" dir="rtl">دۇتار تەڭشىگۈچ ھازىر ئاسراش ھالىتىدە. ئۇزۇن ئۆتمەي قايتا سىناپ بېقىڭ.</p>
+    </div>
+  </main>
+
+  <main class="app" id="appRoot" role="main">
 
     <!-- Header -->
     <header class="header">
@@ -235,6 +250,25 @@
 
   </main>
 
-  <script src="js/tuner.js"></script>
+  <script>
+    (function initMode() {
+      const maintenance = !!window.MAINTENANCE_MODE;
+      const appRoot = document.getElementById('appRoot');
+      const maintenanceScreen = document.getElementById('maintenanceScreen');
+
+      if (maintenance) {
+        appRoot.hidden = true;
+        maintenanceScreen.hidden = false;
+        return;
+      }
+
+      appRoot.hidden = false;
+      maintenanceScreen.hidden = true;
+
+      const script = document.createElement('script');
+      script.src = 'js/tuner.js';
+      document.body.appendChild(script);
+    })();
+  </script>
 </body>
 </html>
